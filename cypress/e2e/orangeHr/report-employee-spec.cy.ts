@@ -21,7 +21,7 @@ let idEvent: any;
 let idExpenses: any;
 let empNumber: number[] = []; //store employeeNumber retrieve from API
 let employees: any[] = []; // store employee firstName use it  for Assertion table
-let salaryAmount: string;
+let idClaim: any;
 let userName: string;
 
 beforeEach(() => {
@@ -46,7 +46,7 @@ beforeEach(() => {
       idExpenses = id;
     });
     //greate 2 employee via api and assign for that job &location & salary
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 1; i++) {
       addEmployee(empInfo[i].firstName, empInfo[i].id, empInfo[i].lastName)
         .then((empNum) => {
           // store employee Number
@@ -65,35 +65,85 @@ beforeEach(() => {
             exspensName
           );
         })
-        .then(() => {});
+        .then(() => {
+          cy.log("user one", employees[0]);
+          cy.log("user two", employees[1]);
+          cy.logout();
+          loginObj.loginValid(employees[0], "123456a");
+          cy.visit(
+            "https://opensource-demo.orangehrmlive.com/web/index.php/claim/submitClaim"
+          );
+          cy.request({
+            method: "POST",
+            url: "https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/claim/requests",
+            body: {
+              claimEventId: idEvent,
+              currencyId: "AFN",
+              remarks: null,
+            },
+          }).then((res) => {
+            console.log(res, "aftercalim user ");
+            idClaim = res.body.data.id;
+            cy.visit(
+              `https://opensource-demo.orangehrmlive.com/web/index.php/claim/submitClaim/id/${idClaim}`
+            );
+
+            // cy.request({
+            //   method: "GET",
+            //   url: " https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/claim/expenses/types?limit=0&status=true",
+            // });
+            // cy.request({
+            //   method: "GET",
+            //   url: " https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/leave/workweek?model=indexed",
+            // });
+            // cy.request({
+            //   method: "GET",
+            //   url: "https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/leave/holidays?fromDate=2023-01-01&toDate=2023-12-31",
+            // })
+            // cy.wait(10000);
+            // .then(() => {
+            cy.request({
+              method: "POST",
+              url: `
+            https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/claim/requests/${idClaim}/expenses`,
+              body: {
+                expenseTypeId: 2,
+                date: "2023-11-29",
+                amount: "100.00",
+                note: null,
+              },
+            });
+            // });
+          });
+        });
     }
   });
-  cy.log("user one", employees[0]);
-  cy.log("user two", employees[1]);
-  cy.logout();
-  loginObj.loginValid(employees[0], "123456a");
-  cy.request({
-    method: "POST",
-    url: "https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/claim/requests",
-    body: {
-      claimEventId: idEvent,
-      currencyId: "AFN",
-      remarks: null,
-    },
-  }).then((res) => {
-    console.log(res, "aftercalim user ");
-    cy.request({
-      method: "POST",
-      url: `
-  https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/claim/requests/40/expenses`,
-      body: {
-        expenseTypeId: idExpenses,
-        date: "2023-11-13",
-        amount: "100.00",
-        note: null,
-      },
-    });
-  });
+  // cy.log("user one", employees[0]);
+  // cy.log("user two", employees[1]);
+  // cy.logout();
+  // loginObj.loginValid(employees[0], "123456a");
+  // cy.request({
+  //   method: "POST",
+  //   url: "https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/claim/requests",
+  //   body: {
+  //     claimEventId: idEvent,
+  //     currencyId: "AFN",
+  //     remarks: null,
+  //   },
+  // }).then((res) => {
+  //   console.log(res, "aftercalim user ");
+  //   cy.request({
+  //     method: "POST",
+  //     url: `
+  // https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/claim/requests/res.body.data.id/expenses`,
+  //     body: {
+  //       expenseTypeId: idExpenses,
+  //       date: "2023-11-13",
+  //       amount: "100.00",
+  //       note: null,
+  //     },
+  //   });
+  // });
 
   // tableData = [
   //   [employees[0], jobTitle, salaryAmount],
