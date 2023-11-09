@@ -1,0 +1,17 @@
+[
+  {
+    "firstName": "alaa12",
+    "lastName": "abuhani",
+    "id": "10010",
+    "userName": "alaahani",
+    "password": "123456a"
+  },
+  {
+    "firstName": "alaa32",
+    "lastName": "abuhani",
+    "id": "10011",
+    "userName": "alaahani",
+    "password": "123456a"
+  },
+  { "eventTitle": "test-one", "expenseName": "test-two" }
+]
