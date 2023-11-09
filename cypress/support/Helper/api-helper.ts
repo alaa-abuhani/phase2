@@ -58,21 +58,21 @@ export const deleteEmployee = (empNumber: any) => {
     },
   });
 };
-export const deleteJob = (jobId: any) => {
+export const deleteExpenses = (expensesId: any) => {
   cy.api({
     method: "DELETE",
-    url: URLs.jobDelete,
+    url: "/api/v2/claim/expenses/types",
     body: {
-      ids: [jobId],
+      ids: [expensesId],
     },
   });
 };
-export const deleteLocation = (LocId: any) => {
+export const deleteEvents = (eventId: any) => {
   cy.api({
     method: "DELETE",
-    url: URLs.locationDelete,
+    url: "/api/v2/claim/events",
     body: {
-      ids: [LocId],
+      ids: [eventId],
     },
   });
 };
