@@ -40,3 +40,20 @@ export const ExpensesData = (expensesName: any): any => {
   };
   return Expense;
 };
+export const addClaimData = (idEvent: any, currencyId: any): any => {
+  let addClaim: any = {
+    claimEventId: idEvent,
+    currencyId: currencyId,
+    remarks: null,
+  };
+  return addClaim;
+};
+export const claimExpensesData = (idExpenses: any, date: any, amount: any) => {
+  let addClaim: any = {
+    expenseTypeId: idExpenses,
+    date: date,
+    amount: amount,
+    note: null,
+  };
+  return addClaim;
+};

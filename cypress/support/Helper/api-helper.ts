@@ -1,4 +1,6 @@
 import {
+  addClaimData,
+  claimExpensesData,
   employeeData,
   eventData,
   ExpensesData,
@@ -11,8 +13,7 @@ export const URLs: any = {
   user: `${baseUrl}/api/v2/admin/users`,
   events: `${baseUrl}/api/v2/claim/events`,
   expenses: `${baseUrl}/api/v2/claim/expenses/types`,
-  jobDetails: `${baseUrl}/api/v2/admin/locations`,
-  jobDelete: `${baseUrl}/api/v2/admin/job-titles`,
+  claimRequests: `${baseUrl}/api/v2/claim/requests`,
   employeeDelete: `${baseUrl}/api/v2/pim/employees`,
   locationDelete: `${baseUrl}/api/v2/admin/locations`,
 };
@@ -50,14 +51,10 @@ export const addUser = (empNum: any, userName: any, password: any) => {
 };
 export const addClaim = (idEvent: any, currencyId: any) => {
   return cy
-    .request({
+    .api({
       method: "POST",
-      url: "/api/v2/claim/requests",
-      body: {
-        claimEventId: idEvent,
-        currencyId: currencyId,
-        remarks: null,
-      },
+      url: URLs.claimRequests,
+      body: addClaimData(idEvent, currencyId),
     })
     .then((res) => res);
 };
@@ -67,19 +64,14 @@ export const addClaimExpenses = (
   date: any,
   amount: any
 ) => {
-  cy.request({
+  cy.api({
     method: "POST",
     url: `/api/v2/claim/requests/${idClaim}/expenses`,
-    body: {
-      expenseTypeId: idExpenses,
-      date: date,
-      amount: amount,
-      note: null,
-    },
+    body: claimExpensesData(idExpenses, date, amount),
   });
 };
 export const submitClaim = (idClaim: any) => {
-  cy.request({
+  cy.api({
     method: "PUT",
     url: `/api/v2/claim/requests/${idClaim}/action`,
     body: {

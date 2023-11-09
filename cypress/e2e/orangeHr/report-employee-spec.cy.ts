@@ -22,7 +22,7 @@ let tableData: any; // array of data use for Assertion  report table cell
 let tableRowNumber: number; // number row of report table use it for Assertion
 let idEvent: any;
 let idExpenses: any;
-let empNumber: number[] = []; //store employeeNumber retrieve from API
+let empNumber: number; //store employeeNumber retrieve from API
 let employees: any[] = []; // store employee firstName use it  for Assertion table
 let idClaim: any;
 let userName: string;
@@ -57,7 +57,7 @@ beforeEach(() => {
     addEmployee(empInfo[0].firstName, empInfo[0].id, empInfo[0].lastName)
       .then((empNum) => {
         // store employee Number
-        empNumber.push(empNum);
+        empNumber = empNum;
       })
       .then((empNum) => {
         userName = empInfo[0].userName + Math.round(10000 * Math.random());
@@ -78,67 +78,16 @@ beforeEach(() => {
         cy.visit("/claim/submitClaim");
         addClaim(idEvent, currencyId).then((res) => {
           console.log("res");
-          cy.log(`${res} &&claim/requests `);
           idClaim = res.body.data.id;
-          referenceId = res.body.data.id.referenceId;
-
+          referenceId = res.body.data.referenceId;
+          cy.log(`${referenceId}`);
           cy.log(`${idClaim}`);
           addClaimExpenses(idExpenses, idClaim, date, amount);
-          // cy.request({
-          //   method: "POST",
-          //   url: `/api/v2/claim/requests/${idClaim}/expenses`,
-          //   body: {
-          //     expenseTypeId: idExpenses,
-          //     date: date,
-          //     amount: amount,
-          //     note: null,
-          //   },
-          // })
-          //   .then((res) => {
-          //     cy.log(`${res} ## claim/requests/${idClaim}/expenses `);
-          //     cy.request({
-          //       method: "PUT",
-          //       url: `/api/v2/claim/requests/${idClaim}/action`,
-          //       body: {
-          //         action: "SUBMIT",
-          //       },
-          //     });
-          //   })
-          //   .then((res) => {
-          //     status = res.body.data.status;
-          //     cy.log(`${status}`);
-          //   });
           submitClaim(idClaim);
         });
       });
     // }
   });
-  // cy.log("user one", employees[0]);
-  // cy.log("user two", employees[1]);
-  // cy.logout();
-  // loginObj.loginValid(employees[0], "123456a");
-  // cy.request({
-  //   method: "POST",
-  //   url: "https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/claim/requests",
-  //   body: {
-  //     claimEventId: idEvent,
-  //     currencyId: "AFN",
-  //     remarks: null,
-  //   },
-  // }).then((res) => {
-  //   console.log(res, "aftercalim user ");
-  //   cy.request({
-  //     method: "POST",
-  //     url: `
-  // https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/claim/requests/res.body.data.id/expenses`,
-  //     body: {
-  //       expenseTypeId: idExpenses,
-  //       date: "2023-11-13",
-  //       amount: "100.00",
-  //       note: null,
-  //     },
-  //   });
-  // });
 
   // tableData = [
   //   [employees[0], jobTitle, salaryAmount],
@@ -158,6 +107,13 @@ beforeEach(() => {
 
 describe("Report functionality", () => {
   it("Report: Generate an Employee report with search criteria Personal,Job,Salary)", () => {
+    cy.logout();
+    visitHomePage();
+    cy.fixture("login.json").as("loginInfo");
+    cy.get("@loginInfo").then((loginInfo: any) => {
+      loginObj.loginValid(loginInfo.Admin, loginInfo.Password);
+    });
+
     // visitHomePage();
     // //open PIM Tab & Report page UI
     // AddReport.ReportDialoge();
@@ -175,12 +131,7 @@ describe("Report functionality", () => {
 });
 
 afterEach(() => {
-  //delete all employee
-  // for (let i = 0; i < 3; i++) {
-  //   deleteEmployee(empNumber[i]);
-  // }
-  // //delete job
-  // deleteJob(idjob);
-  // //delete location
-  // deleteLocation(idloc);
+  // deleteEmployee(empNumber);
+  // deleteExpenses(idExpenses);
+  // deleteEvents(idEvent);
 });
