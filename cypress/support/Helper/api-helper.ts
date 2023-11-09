@@ -4,6 +4,7 @@ import {
   employeeData,
   eventData,
   ExpensesData,
+  submitClaimData,
   userData,
 } from "./payload-function";
 
@@ -14,8 +15,6 @@ export const URLs: any = {
   events: `${baseUrl}/api/v2/claim/events`,
   expenses: `${baseUrl}/api/v2/claim/expenses/types`,
   claimRequests: `${baseUrl}/api/v2/claim/requests`,
-  employeeDelete: `${baseUrl}/api/v2/pim/employees`,
-  locationDelete: `${baseUrl}/api/v2/admin/locations`,
 };
 export const addEvent = (eventName: any) => {
   return cy
@@ -74,16 +73,14 @@ export const submitClaim = (idClaim: any) => {
   cy.api({
     method: "PUT",
     url: `/api/v2/claim/requests/${idClaim}/action`,
-    body: {
-      action: "SUBMIT",
-    },
+    body: submitClaimData(),
   });
 };
 
 export const deleteEmployee = (empNumber: any) => {
   cy.api({
     method: "DELETE",
-    url: URLs.employeeDelete,
+    url: URLs.employee,
     body: {
       ids: [empNumber],
     },
@@ -92,7 +89,7 @@ export const deleteEmployee = (empNumber: any) => {
 export const deleteExpenses = (expensesId: any) => {
   cy.api({
     method: "DELETE",
-    url: "/api/v2/claim/expenses/types",
+    url: URLs.expenses,
     body: {
       ids: [expensesId],
     },
@@ -101,7 +98,7 @@ export const deleteExpenses = (expensesId: any) => {
 export const deleteEvents = (eventId: any) => {
   cy.api({
     method: "DELETE",
-    url: "/api/v2/claim/events",
+    url: URLs.events,
     body: {
       ids: [eventId],
     },

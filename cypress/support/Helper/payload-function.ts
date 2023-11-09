@@ -57,3 +57,10 @@ export const claimExpensesData = (idExpenses: any, date: any, amount: any) => {
   };
   return addClaim;
 };
+
+export const submitClaimData = () => {
+  let submitClaim: any = {
+    action: "SUBMIT",
+  };
+  return submitClaim;
+};
