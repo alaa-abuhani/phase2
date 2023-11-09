@@ -7,6 +7,9 @@ import {
   deleteEmployee,
   deleteExpenses,
   deleteEvents,
+  addClaim,
+  addClaimExpenses,
+  submitClaim,
 } from "../../support/Helper/api-helper";
 import { visitHomePage } from "../../support/PageObject/common-page-visit";
 const loginObj: login = new login();
@@ -27,6 +30,7 @@ let referenceId: any;
 let status: any;
 let amount = "100.00";
 let date = "2023-11-29";
+let currencyId = "AFN";
 
 beforeEach(() => {
   cy.intercept("/web/index.php/dashboard/index").as("loginpage");
@@ -57,7 +61,6 @@ beforeEach(() => {
       })
       .then((empNum) => {
         userName = empInfo[0].userName + Math.round(10000 * Math.random());
-        employees.push(userName);
         addUser(empNum, userName, empInfo[0].password);
         cy.log(
           "username:",
@@ -69,49 +72,43 @@ beforeEach(() => {
         );
       })
       .then(() => {
-        cy.log("user one", employees[0]);
+        cy.log("user one", userName);
         cy.logout();
-        loginObj.loginValid(employees[0], "123456a");
+        loginObj.loginValid(userName, "123456a");
         cy.visit("/claim/submitClaim");
-        cy.request({
-          method: "POST",
-          url: "/api/v2/claim/requests",
-          body: {
-            claimEventId: idEvent,
-            currencyId: "AFN",
-            remarks: null,
-          },
-        }).then((res) => {
+        addClaim(idEvent, currencyId).then((res) => {
           console.log("res");
           cy.log(`${res} &&claim/requests `);
           idClaim = res.body.data.id;
           referenceId = res.body.data.id.referenceId;
 
           cy.log(`${idClaim}`);
-          cy.request({
-            method: "POST",
-            url: `/api/v2/claim/requests/${idClaim}/expenses`,
-            body: {
-              expenseTypeId: idExpenses,
-              date: date,
-              amount: amount,
-              note: null,
-            },
-          })
-            .then((res) => {
-              cy.log(`${res} ## claim/requests/${idClaim}/expenses `);
-              cy.request({
-                method: "PUT",
-                url: `/api/v2/claim/requests/${idClaim}/action`,
-                body: {
-                  action: "SUBMIT",
-                },
-              });
-            })
-            .then((res) => {
-              status = res.body.data.status;
-              cy.log(`${status}`);
-            });
+          addClaimExpenses(idExpenses, idClaim, date, amount);
+          // cy.request({
+          //   method: "POST",
+          //   url: `/api/v2/claim/requests/${idClaim}/expenses`,
+          //   body: {
+          //     expenseTypeId: idExpenses,
+          //     date: date,
+          //     amount: amount,
+          //     note: null,
+          //   },
+          // })
+          //   .then((res) => {
+          //     cy.log(`${res} ## claim/requests/${idClaim}/expenses `);
+          //     cy.request({
+          //       method: "PUT",
+          //       url: `/api/v2/claim/requests/${idClaim}/action`,
+          //       body: {
+          //         action: "SUBMIT",
+          //       },
+          //     });
+          //   })
+          //   .then((res) => {
+          //     status = res.body.data.status;
+          //     cy.log(`${status}`);
+          //   });
+          submitClaim(idClaim);
         });
       });
     // }

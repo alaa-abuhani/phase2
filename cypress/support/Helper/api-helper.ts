@@ -42,10 +42,49 @@ export const addEmployee = (
     .then((res) => res.body.data.empNumber);
 };
 export const addUser = (empNum: any, userName: any, password: any) => {
-  cy.request({
+  cy.api({
     method: "POST",
     url: URLs.user,
     body: userData(empNum, userName, password),
+  });
+};
+export const addClaim = (idEvent: any, currencyId: any) => {
+  return cy
+    .request({
+      method: "POST",
+      url: "/api/v2/claim/requests",
+      body: {
+        claimEventId: idEvent,
+        currencyId: currencyId,
+        remarks: null,
+      },
+    })
+    .then((res) => res);
+};
+export const addClaimExpenses = (
+  idExpenses: any,
+  idClaim: number,
+  date: any,
+  amount: any
+) => {
+  cy.request({
+    method: "POST",
+    url: `/api/v2/claim/requests/${idClaim}/expenses`,
+    body: {
+      expenseTypeId: idExpenses,
+      date: date,
+      amount: amount,
+      note: null,
+    },
+  });
+};
+export const submitClaim = (idClaim: any) => {
+  cy.request({
+    method: "PUT",
+    url: `/api/v2/claim/requests/${idClaim}/action`,
+    body: {
+      action: "SUBMIT",
+    },
   });
 };
 
