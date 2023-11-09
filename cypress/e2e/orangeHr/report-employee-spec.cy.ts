@@ -118,26 +118,38 @@ describe("Report functionality", () => {
     );
     // static validateTableRow(colomnHeader: any, expectedValue: any) {
     //find the index of the colomn depnds on the header lable
+    let i = 1;
+    let q = 1;
+    let w = 1;
     cy.get(".oxd-table-header")
       .contains("Reference Id")
       .invoke("index")
       .then((colomnIndex) => {
         //find all rows in  table body
+        cy.log(
+          "index cokume index ",
+          `${colomnIndex}`,
+          `redf is${referenceId}`,
+          `i ==`,
+          i++
+        );
         cy.get(".oxd-table-body")
           .find(".oxd-table-card")
           .each((elem) => {
+            cy.log("element", `${elem}`, "wwwwwwwww", w++);
             cy.wrap(elem)
               .find(".oxd-table-row")
               .find(".oxd-table-cell")
               .eq(colomnIndex)
               .invoke("text")
               .then((cell) => {
-                if (cell.trim() == referenceId) {
+                cy.log("cell", `${cell}`, "qqqqqqq", q++);
+                if (cell.trim() === `${referenceId}`.trim()) {
                   //expected the value in the row cell of index header , the test should pass
                   expect(
                     cell.trim(),
                     `found the row with = ${referenceId}`
-                  ).to.equal(referenceId);
+                  ).to.equal(`${referenceId}`.trim());
                 }
               });
           });

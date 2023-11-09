@@ -49,4 +49,31 @@ export default class GenericHepler {
           });
       });
   }
+  static validateTableRow(colomnHeader: any, expectedValue: any) {
+    //find the index of the colomn depnds on the header lable
+    cy.get(".oxd-table-header")
+      .contains(colomnHeader)
+      .invoke("index")
+      .then((colomnIndex) => {
+        //find all rows in  table body
+        cy.get(".oxd-table-body")
+          .find(".oxd-table-card")
+          .each((elem) => {
+            cy.wrap(elem)
+              .find(".oxd-table-row")
+              .find(".oxd-table-cell")
+              .eq(colomnIndex)
+              .invoke("text")
+              .then((cell) => {
+                if (cell.trim() == expectedValue.trim()) {
+                  //expected the value in the row cell of index header , the test should pass
+                  expect(
+                    cell.trim(),
+                    `found the row with ${colomnHeader} = ${expectedValue}`
+                  ).to.equal(expectedValue.trim());
+                }
+              });
+          });
+      });
+  }
 }
