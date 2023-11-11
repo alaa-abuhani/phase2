@@ -13,7 +13,7 @@ import {
 } from "../../support/Helper/api-helper";
 import { visitHomePage } from "../../support/PageObject/common-page-visit";
 import moment from "moment";
-import { ckeckclaimTable } from "../../support/PageObject/Claim/claim-action";
+import { ckeckclaimTable } from "../../support/PageObject/Claim/claim-assertion";
 const loginObj: login = new login();
 let eventTitle: string;
 let exspensName: string;

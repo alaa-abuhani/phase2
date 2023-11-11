@@ -13,7 +13,7 @@ import {
 } from "../../support/Helper/api-helper";
 import { visitHomePage } from "../../support/PageObject/common-page-visit";
 import moment from "moment";
-import { ckeckclaimTable } from "../../support/PageObject/Claim/claim-action";
+import { ckeckClaimTableAssertion } from "../../support/PageObject/Claim/claim-assertion";
 const loginObj: login = new login();
 let eventTitle: string;
 let exspensName: string;
@@ -57,6 +57,7 @@ beforeEach(() => {
       })
       .then(() => {
         cy.logout();
+        //user login
         loginObj.loginValid(empInfo[0].userName, empInfo[0].password);
         cy.visit("/claim/submitClaim");
         addClaim(idEvent, currencyId).then((res) => {
@@ -72,7 +73,7 @@ beforeEach(() => {
 });
 
 describe("Claim functionality", () => {
-  it("Cliam: verify admin can approve submited cliam user )", () => {
+  it("Claim: verify admin can approve submited cliam user )", () => {
     status = "Paid";
     expectValue = [
       referenceId,
@@ -83,7 +84,7 @@ describe("Claim functionality", () => {
       date,
       status,
       amount,
-      " View Details ",
+      "View Details",
     ];
 
     cy.fixture("login.json").as("loginInfo");
@@ -94,7 +95,7 @@ describe("Claim functionality", () => {
     cy.visit(`/claim/assignClaim/id/${idClaim}`);
     cy.get(".oxd-button--secondary").click({ force: true });
     cy.visit("/claim/viewAssignClaim");
-    ckeckclaimTable(`${referenceId}`, expectValue);
+    ckeckClaimTableAssertion(`${referenceId}`, expectValue);
   });
 
   it("Claim: verify admin can reject submited cliam user)", () => {
@@ -110,17 +111,16 @@ describe("Claim functionality", () => {
       amount,
       " View Details ",
     ];
-
+    //admi login
     cy.fixture("login.json").as("loginInfo");
     cy.get("@loginInfo").then((loginInfo: any) => {
       loginObj.loginValid(loginInfo.Admin, loginInfo.Password);
     });
     cy.visit("/claim/viewAssignClaim");
     cy.visit(`/claim/assignClaim/id/${idClaim}`);
-
     cy.get(".oxd-button--danger").click({ force: true });
     cy.visit("/claim/viewAssignClaim");
-    ckeckclaimTable(`${referenceId}`, expectValue);
+    ckeckClaimTableAssertion(`${referenceId}`, expectValue);
   });
 });
 
