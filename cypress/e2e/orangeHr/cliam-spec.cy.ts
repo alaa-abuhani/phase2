@@ -15,9 +15,8 @@ import { visitHomePage } from "../../support/PageObject/common-page-visit";
 import moment from "moment";
 import { ckeckclaimTable } from "../../support/PageObject/Claim/claim-action";
 const loginObj: login = new login();
-export let eventTitle: string;
-export let reportName: string;
-export let exspensName: string;
+let eventTitle: string;
+let exspensName: string;
 let idEvent: any;
 let idExpenses: any;
 let empNumber: number; //store employeeNumber retrieve from API
@@ -26,12 +25,10 @@ let userName: string;
 let referenceId: any;
 let status: any;
 let amount = "100.00";
-let date = "2023-11-29";
+let date = moment().format("YYYY-MM-DD");
 let currencyId = "AFN";
 let currencyName = "Afghanistan Afghani";
 let expectValue: any;
-var formattedDate = moment().format("YYYY-MM-DD");
-console.log(formattedDate);
 
 beforeEach(() => {
   cy.intercept("/web/index.php/dashboard/index").as("loginpage");
@@ -71,7 +68,7 @@ beforeEach(() => {
         addClaim(idEvent, currencyId).then((res) => {
           idClaim = res.body.data.id;
           referenceId = res.body.data.referenceId;
-          addClaimExpenses(idExpenses, idClaim, formattedDate, amount);
+          addClaimExpenses(idExpenses, idClaim, date, amount);
           submitClaim(idClaim);
         });
       })
@@ -92,7 +89,7 @@ describe("Claim functionality", () => {
       eventTitle,
       "",
       currencyName,
-      formattedDate,
+      date,
       status,
       amount,
       " View Details ",
@@ -107,27 +104,6 @@ describe("Claim functionality", () => {
     cy.get(".oxd-button--secondary").click({ force: true });
     cy.visit("/claim/viewAssignClaim");
     ckeckclaimTable(`${referenceId}`, expectValue);
-    // cy.get(".oxd-table-body")
-    //   .find(".oxd-table-card")
-    //   .find(".oxd-table-row")
-    //   .contains(`${referenceId}`)
-    //   .invoke("index")
-    //   .as("indexTargetRow")
-    //   .then((indexrow) => {
-    //     cy.get(".oxd-table-body")
-    //       .find(".oxd-table-card")
-    //       .find(".oxd-table-row")
-    //       .eq(indexrow)
-    //       .each((elem) => {
-    //         cy.wrap(elem)
-    //           .find(".oxd-table-cell")
-    //           .each((cell, cellIndex) => {
-    //             cy.wrap(cell)
-    //               .invoke("text")
-    //               .should("contain", expectValue[cellIndex]);
-    //           });
-    //       });
-    //   });
   });
 
   it("Claim: verify admin can reject submited cliam user)", () => {
@@ -138,7 +114,7 @@ describe("Claim functionality", () => {
       eventTitle,
       "",
       currencyName,
-      formattedDate,
+      date,
       status,
       amount,
       " View Details ",
@@ -154,26 +130,6 @@ describe("Claim functionality", () => {
     cy.get(".oxd-button--danger").click({ force: true });
     cy.visit("/claim/viewAssignClaim");
     ckeckclaimTable(`${referenceId}`, expectValue);
-    // cy.get(".oxd-table-body")
-    //   .find(".oxd-table-card")
-    //   .find(".oxd-table-row")
-    //   .contains(`${referenceId}`)
-    //   .invoke("index")
-    //   .then((row) => {
-    //     cy.get(".oxd-table-body")
-    //       .find(".oxd-table-card")
-    //       .find(".oxd-table-row")
-    //       .eq(row)
-    //       .each((element) => {
-    //         cy.wrap(element)
-    //           .find(".oxd-table-cell")
-    //           .each((cell, cellIndex) => {
-    //             cy.wrap(cell)
-    //               .invoke("text")
-    //               .should("contain", expectValue[cellIndex]);
-    //           });
-    //       });
-    //   });
   });
 });
 
