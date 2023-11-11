@@ -24,6 +24,7 @@
     "cypress": "npm run allure:clean && npx cypress run --browser electron --spec cypress/e2e/orangeHr/repor-employee-spec.cy.ts --env allure=true && npm run allure:report"
   },
   "dependencies": {
-    "cypress-plugin-api": "^2.11.1"
+    "cypress-plugin-api": "^2.11.1",
+    "moment": "^2.29.4"
   }
 }
