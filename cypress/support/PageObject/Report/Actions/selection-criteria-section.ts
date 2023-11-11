@@ -1,4 +1,4 @@
-import { jobTitle, locationName } from "../../../../e2e/orangeHr/cliam-spec.cy";
+import { jobTitle, locationName } from "../../../../e2e/orangeHr/claim-spec.cy";
 
 export default class SelectionCriteria {
   elements = {

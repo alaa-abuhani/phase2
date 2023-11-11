@@ -1,2 +1,3 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Wed Nov 08 12:57:58 IST 2023","Wed Nov 08 12:58:32 IST 2023","34558","","Report functionality","","","","Report: Generate an Employee report with search criteria Personal,Job,Salary)",""
+"passed","Sat Nov 11 16:43:46 IST 2023","Sat Nov 11 16:44:21 IST 2023","34866","","Claim functionality","","","","Cliam: verify admin can approve submited cliam user )",""
+"passed","Sat Nov 11 16:44:25 IST 2023","Sat Nov 11 16:44:51 IST 2023","26609","","Claim functionality","","","","Claim: verify admin can reject submited cliam user)",""
