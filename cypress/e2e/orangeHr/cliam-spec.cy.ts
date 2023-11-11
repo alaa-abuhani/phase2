@@ -13,6 +13,7 @@ import {
 } from "../../support/Helper/api-helper";
 import { visitHomePage } from "../../support/PageObject/common-page-visit";
 import moment from "moment";
+import { ckeckclaimTable } from "../../support/PageObject/Claim/claim-action";
 const loginObj: login = new login();
 export let eventTitle: string;
 export let reportName: string;
@@ -76,12 +77,13 @@ beforeEach(() => {
       })
       .then(() => {
         cy.logout();
+        visitHomePage();
       });
     // }
   });
 });
 
-describe("Cliam functionality", () => {
+describe("Claim functionality", () => {
   it("Cliam: verify admin can approve submited cliam user )", () => {
     status = "Paid";
     expectValue = [
@@ -95,7 +97,7 @@ describe("Cliam functionality", () => {
       amount,
       " View Details ",
     ];
-    visitHomePage();
+
     cy.fixture("login.json").as("loginInfo");
     cy.get("@loginInfo").then((loginInfo: any) => {
       loginObj.loginValid(loginInfo.Admin, loginInfo.Password);
@@ -104,30 +106,31 @@ describe("Cliam functionality", () => {
     cy.visit(`/claim/assignClaim/id/${idClaim}`);
     cy.get(".oxd-button--secondary").click({ force: true });
     cy.visit("/claim/viewAssignClaim");
-    cy.get(".oxd-table-body")
-      .find(".oxd-table-card")
-      .find(".oxd-table-row")
-      .contains(`${referenceId}`)
-      .invoke("index")
-      .as("indexTargetRow")
-      .then((indexrow) => {
-        cy.get(".oxd-table-body")
-          .find(".oxd-table-card")
-          .find(".oxd-table-row")
-          .eq(indexrow)
-          .each((elem) => {
-            cy.wrap(elem)
-              .find(".oxd-table-cell")
-              .each((cell, cellIndex) => {
-                cy.wrap(cell)
-                  .invoke("text")
-                  .should("contain", expectValue[cellIndex]);
-              });
-          });
-      });
+    ckeckclaimTable(`${referenceId}`, expectValue);
+    // cy.get(".oxd-table-body")
+    //   .find(".oxd-table-card")
+    //   .find(".oxd-table-row")
+    //   .contains(`${referenceId}`)
+    //   .invoke("index")
+    //   .as("indexTargetRow")
+    //   .then((indexrow) => {
+    //     cy.get(".oxd-table-body")
+    //       .find(".oxd-table-card")
+    //       .find(".oxd-table-row")
+    //       .eq(indexrow)
+    //       .each((elem) => {
+    //         cy.wrap(elem)
+    //           .find(".oxd-table-cell")
+    //           .each((cell, cellIndex) => {
+    //             cy.wrap(cell)
+    //               .invoke("text")
+    //               .should("contain", expectValue[cellIndex]);
+    //           });
+    //       });
+    //   });
   });
 
-  it("Cliam: verify admin can reject submited cliam user)", () => {
+  it("Claim: verify admin can reject submited cliam user)", () => {
     status = "Rejected";
     expectValue = [
       referenceId,
@@ -140,7 +143,7 @@ describe("Cliam functionality", () => {
       amount,
       " View Details ",
     ];
-    visitHomePage();
+
     cy.fixture("login.json").as("loginInfo");
     cy.get("@loginInfo").then((loginInfo: any) => {
       loginObj.loginValid(loginInfo.Admin, loginInfo.Password);
@@ -150,27 +153,27 @@ describe("Cliam functionality", () => {
 
     cy.get(".oxd-button--danger").click({ force: true });
     cy.visit("/claim/viewAssignClaim");
-    cy.get(".oxd-table-body")
-      .find(".oxd-table-card")
-      .find(".oxd-table-row")
-      .contains(`${referenceId}`)
-      .invoke("index")
-      .as("indexTargetRow")
-      .then((indexrow) => {
-        cy.get(".oxd-table-body")
-          .find(".oxd-table-card")
-          .find(".oxd-table-row")
-          .eq(indexrow)
-          .each((elem) => {
-            cy.wrap(elem)
-              .find(".oxd-table-cell")
-              .each((cell, cellIndex) => {
-                cy.wrap(cell)
-                  .invoke("text")
-                  .should("contain", expectValue[cellIndex]);
-              });
-          });
-      });
+    ckeckclaimTable(`${referenceId}`, expectValue);
+    // cy.get(".oxd-table-body")
+    //   .find(".oxd-table-card")
+    //   .find(".oxd-table-row")
+    //   .contains(`${referenceId}`)
+    //   .invoke("index")
+    //   .then((row) => {
+    //     cy.get(".oxd-table-body")
+    //       .find(".oxd-table-card")
+    //       .find(".oxd-table-row")
+    //       .eq(row)
+    //       .each((element) => {
+    //         cy.wrap(element)
+    //           .find(".oxd-table-cell")
+    //           .each((cell, cellIndex) => {
+    //             cy.wrap(cell)
+    //               .invoke("text")
+    //               .should("contain", expectValue[cellIndex]);
+    //           });
+    //       });
+    //   });
   });
 });
 
