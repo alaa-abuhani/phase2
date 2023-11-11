@@ -16,15 +16,10 @@ import moment from "moment";
 const loginObj: login = new login();
 export let eventTitle: string;
 export let reportName: string;
-let firstHeaderData: any; // store the values of first header table for Assertion
-let secondHeaderData: any; // store the values of second header table for Assertion
 export let exspensName: string;
-let tableData: any; // array of data use for Assertion  report table cell
-let tableRowNumber: number; // number row of report table use it for Assertion
 let idEvent: any;
 let idExpenses: any;
 let empNumber: number; //store employeeNumber retrieve from API
-let employees: any[] = []; // store employee firstName use it  for Assertion table
 let idClaim: any;
 let userName: string;
 let referenceId: any;
@@ -67,26 +62,14 @@ beforeEach(() => {
       .then((empNum) => {
         userName = empInfo[0].userName + Math.round(10000 * Math.random());
         addUser(empNum, userName, empInfo[0].password);
-        cy.log(
-          "username:",
-          userName,
-          "event",
-          eventTitle,
-          "expens",
-          exspensName
-        );
       })
       .then(() => {
-        cy.log("user one", userName);
         cy.logout();
         loginObj.loginValid(userName, "123456a");
         cy.visit("/claim/submitClaim");
         addClaim(idEvent, currencyId).then((res) => {
-          console.log("res");
           idClaim = res.body.data.id;
           referenceId = res.body.data.referenceId;
-          cy.log(`${referenceId}`);
-          cy.log(`${idClaim}`);
           addClaimExpenses(idExpenses, idClaim, formattedDate, amount);
           submitClaim(idClaim);
         });
@@ -117,16 +100,10 @@ describe("Cliam functionality", () => {
     cy.get("@loginInfo").then((loginInfo: any) => {
       loginObj.loginValid(loginInfo.Admin, loginInfo.Password);
     });
-    cy.visit(
-      "https://opensource-demo.orangehrmlive.com/web/index.php/claim/viewAssignClaim"
-    );
-    cy.visit(
-      `https://opensource-demo.orangehrmlive.com/web/index.php/claim/assignClaim/id/${idClaim}`
-    );
+    cy.visit("/claim/viewAssignClaim");
+    cy.visit(`/claim/assignClaim/id/${idClaim}`);
     cy.get(".oxd-button--secondary").click({ force: true });
-    cy.visit(
-      "https://opensource-demo.orangehrmlive.com/web/index.php/claim/viewAssignClaim"
-    );
+    cy.visit("/claim/viewAssignClaim");
     cy.get(".oxd-table-body")
       .find(".oxd-table-card")
       .find(".oxd-table-row")
@@ -168,17 +145,11 @@ describe("Cliam functionality", () => {
     cy.get("@loginInfo").then((loginInfo: any) => {
       loginObj.loginValid(loginInfo.Admin, loginInfo.Password);
     });
-    cy.visit(
-      "https://opensource-demo.orangehrmlive.com/web/index.php/claim/viewAssignClaim"
-    );
-    cy.visit(
-      `https://opensource-demo.orangehrmlive.com/web/index.php/claim/assignClaim/id/${idClaim}`
-    );
+    cy.visit("/claim/viewAssignClaim");
+    cy.visit(`/claim/assignClaim/id/${idClaim}`);
 
     cy.get(".oxd-button--danger").click({ force: true });
-    cy.visit(
-      "https://opensource-demo.orangehrmlive.com/web/index.php/claim/viewAssignClaim"
-    );
+    cy.visit("/claim/viewAssignClaim");
     cy.get(".oxd-table-body")
       .find(".oxd-table-card")
       .find(".oxd-table-row")
