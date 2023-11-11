@@ -96,21 +96,6 @@ beforeEach(() => {
       });
     // }
   });
-
-  // tableData = [
-  //   [employees[0], jobTitle, salaryAmount],
-  //   [employees[1], jobTitle, salaryAmount],
-  //   [employees[2], jobTitle, salaryAmount],
-  // ];
-  tableRowNumber = employees.length;
-
-  // store data of report from fixture use this data for create report and Assertion
-  // cy.fixture("report.json").as("reportInfo");
-  // cy.get("@reportInfo").then((reportInfo: any) => {
-  //   reportName = reportInfo.reportName;
-  //   firstHeaderData = reportInfo.firstHeaderData;
-  //   secondHeaderData = reportInfo.secondHeaderData;
-  // });
 });
 
 describe("Cliam functionality", () => {
@@ -163,79 +148,6 @@ describe("Cliam functionality", () => {
               });
           });
       });
-    // static validateTableRow(colomnHeader: any, expectedValue: any) {
-    //find the index of the colomn depnds on the header lable
-    // let i = 1;
-    // let q = 1;
-    // let w = 1;
-    // cy.get(".oxd-table-header")
-    //   .contains("Reference Id")
-    //   .invoke("index")
-    //   .then((colomnIndex) => {
-    //     //find all rows in  table body
-    //     cy.log(
-    //       "index cokume index ",
-    //       `${colomnIndex}`,
-    //       `redf is${referenceId}`,
-    //       `i ==`,
-    //       i++
-    //     );
-    //     cy.get(".oxd-table-body")
-    //       .find(".oxd-table-card")
-    //       .each((elem) => {
-    //         cy.log("element", `${elem}`, "wwwwwwwww", w++);
-    //         cy.wrap(elem)
-    //           .find(".oxd-table-row")
-    //           .find(".oxd-table-cell")
-    //           .eq(colomnIndex)
-    //           .invoke("text")
-    //           .then((cell) => {
-    //             cy.log("cell", `${cell}`, "qqqqqqq", q++);
-    //             if (cell.trim() === `${referenceId}`.trim()) {
-    //               //expected the value in the row cell of index header , the test should pass
-    //               expect(
-    //                 cell.trim(),
-    //                 `found the row with = ${referenceId}`
-    //               ).to.equal(`${referenceId}`.trim());
-    //             }
-    //           });
-    //       });
-    //   });
-    // let expectValue = [
-    //   `${referenceId}`,
-    //   `${userName}`,
-    //   "Event Name",
-    //   "Currency",
-    //   "Submitted Date",
-    //   "Status",
-    //   "Amount ",
-    // ];
-    // cy.get(".oxd-table-body")
-    //   .find(".oxd-table-card")
-    //   .find(".oxd-table-row")
-    //   .each(($row, rowIndex) => {
-    //     cy.wrap($row)
-    //       .find(".oxd-table-cell")
-    //       .each(($cell, cellIndex) => {
-    //         cy.wrap($cell)
-    //           .invoke("text")
-    //           .should("contain", expectValue[rowIndex][cellIndex]);
-    //       });
-    //   });
-    // }
-    // visitHomePage();
-    // //open PIM Tab & Report page UI
-    // AddReport.ReportDialoge();
-    // //execute functions create report UI
-    // AddReport.AddReportActions();
-    // //execute functions assertion report data
-    // checkReportAssetrion(
-    //   reportName,
-    //   firstHeaderData,
-    //   secondHeaderData,
-    //   tableData,
-    //   tableRowNumber
-    // );
   });
 
   it("Cliam: verify admin can reject submited cliam user)", () => {
@@ -296,67 +208,3 @@ afterEach(() => {
   deleteExpenses(idExpenses);
   deleteEvents(idEvent);
 });
-
-// let i = 1;
-//     let q = 1;
-//     let w = 1;
-//     cy.get(".oxd-table-header")
-//       .contains("Reference Id")
-//       .invoke("index")
-//       .then((colomnIndex) => {
-//         //find all rows in  table body
-//         cy.log(
-//           "index cokume index ",
-//           `${colomnIndex}`,
-//           `redf is${referenceId}`,
-//           `i ==`,
-//           i++
-//         );
-//         cy.get(".oxd-table-body")
-//           .find(".oxd-table-card")
-//           .each((elem) => {
-//             cy.log("element", `${elem}`, "wwwwwwwww", w++);
-//             cy.wrap(elem)
-//               .find(".oxd-table-row")
-//               .find(".oxd-table-cell")
-//               .eq(colomnIndex)
-//               .invoke("text")
-//               .then((cell) => {
-//                 cy.log("cell", `${cell}`, "qqqqqqq", q++);
-//                 if (cell.trim() === `${referenceId}`.trim()) {
-//                   //expected the value in the row cell of index header , the test should pass
-//                   expect(
-//                     cell.trim(),
-//                     `found the row with = ${referenceId}`
-//                   ).to.equal(`${referenceId}`.trim());
-//                 }
-//               });
-//           });
-//       });
-
-// export const checkDataInTable = (tableSelector: string, rowsData: any[]) => {
-//   cy.get(tableSelector,{timeout:40000}).find('.rgRow',{timeout:40000}).should('have.length.gt', 0).each(($row :string, rowIndex :number) => {
-//       if (rowIndex < rowsData.length) {
-//           const rowData = rowsData[rowIndex];
-//           let allDataFound = true;
-//           cy.get($row,{timeout:40000}).find('.rgCell',{timeout:40000}).each(($cell, cellIndex) => {
-//               cy.wrap($cell).invoke('text').then((cellText) => {
-//                   const cellTextLower = cellText.trim().toLowerCase();
-//                   const expectedData = rowData[cellIndex] ? rowData[cellIndex].toString().toLowerCase().trim() : '';
-
-//                   if (!cellTextLower.includes(expectedData)) {
-//                       allDataFound = false;
-//                   }
-//               });
-//           });
-//           cy.wrap($row).then(() => {
-//               if (allDataFound) {
-//                   cy.log(`All data found in row ${rowIndex + 1}`);
-//               } else {
-//                   cy.log(`Data not found in row ${rowIndex + 1}`);
-//               }
-//           });
-//       }
-//   });
-// };
-////////================
