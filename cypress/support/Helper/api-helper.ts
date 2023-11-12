@@ -70,7 +70,7 @@ export const addClaimExpenses = (
   });
 };
 export const submitClaim = (idClaim: any) => {
-  cy.api({
+  return cy.api({
     method: "PUT",
     url: `/api/v2/claim/requests/${idClaim}/action`,
     body: submitClaimData(),

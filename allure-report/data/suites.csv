@@ -1,3 +1,3 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Sat Nov 11 16:43:46 IST 2023","Sat Nov 11 16:44:21 IST 2023","34866","","Claim functionality","","","","Cliam: verify admin can approve submited cliam user )",""
-"passed","Sat Nov 11 16:44:25 IST 2023","Sat Nov 11 16:44:51 IST 2023","26609","","Claim functionality","","","","Claim: verify admin can reject submited cliam user)",""
+"passed","Sun Nov 12 02:11:35 IST 2023","Sun Nov 12 02:12:08 IST 2023","32919","","Claim functionality","","","","Claim: verify admin can reject submited claim user)",""
+"passed","Sun Nov 12 02:11:00 IST 2023","Sun Nov 12 02:11:32 IST 2023","32754","","Claim functionality","","","","Claim: verify admin can approve submited claim user )",""

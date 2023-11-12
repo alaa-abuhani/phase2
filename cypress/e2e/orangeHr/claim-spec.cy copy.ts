@@ -27,15 +27,13 @@ let referenceId: any;
 let status: any;
 let amount = "100.00";
 let date = moment().format("YYYY-MM-DD");
-
-let currencyId = "JOD";
-let currencyName = "Jordanian Dinar";
+let currencyId = "AFN";
+let currencyName = "Afghanistan Afghani";
 let expectValue: any;
 let firstName: string;
 let lastName: string;
 
 beforeEach(() => {
-  cy.log(date);
   cy.intercept("/web/index.php/dashboard/index").as("loginpage");
   visitHomePage();
   //admin login
@@ -43,7 +41,7 @@ beforeEach(() => {
   cy.get("@loginInfo").then((loginInfo: any) => {
     loginObj.loginValid(loginInfo.Admin, loginInfo.Password);
   });
-  cy.fixture("employee-claim-Info.json").as("empInfo");
+  cy.fixture("employeeInfo.json").as("empInfo");
   cy.get("@empInfo").then((empInfo: any) => {
     firstName = empInfo[0].firstName;
     lastName = empInfo[0].lastName;
@@ -80,8 +78,7 @@ beforeEach(() => {
 });
 
 describe("Claim functionality", () => {
-  it("Claim: verify admin can approve submited claim user )", () => {
-    cy.log(date);
+  it("Claim: verify admin can approve submited cliam user )", () => {
     status = "Paid";
     expectValue = [
       referenceId,
@@ -94,20 +91,19 @@ describe("Claim functionality", () => {
       amount,
       "View Details",
     ];
-    //admi login
+
     cy.fixture("login.json").as("loginInfo");
     cy.get("@loginInfo").then((loginInfo: any) => {
       loginObj.loginValid(loginInfo.Admin, loginInfo.Password);
     });
-    //open claim page & claim employee tab & search for employee request claim
-    ClaimAssign.claimEmployee(firstName, lastName);
-    //assign claim appprove or reject
-    ClaimAssign.claimApproveReject(status);
+    cy.visit("/claim/viewAssignClaim");
+    cy.visit(`/claim/assignClaim/id/${idClaim}`);
+    cy.get(".oxd-button--secondary").click({ force: true });
+    cy.visit("/claim/viewAssignClaim");
     ckeckClaimTableAssertion(`${referenceId}`, expectValue);
   });
 
-  it("Claim: verify admin can reject submited claim user)", () => {
-    cy.log(date);
+  it.only("Claim: verify admin can reject submited cliam user)", () => {
     status = "Rejected";
     expectValue = [
       referenceId,
@@ -125,10 +121,12 @@ describe("Claim functionality", () => {
     cy.get("@loginInfo").then((loginInfo: any) => {
       loginObj.loginValid(loginInfo.Admin, loginInfo.Password);
     });
-    //open claim page & claim employee tab & search for employee request claim
     ClaimAssign.claimEmployee(firstName, lastName);
-    //assign claim appprove or reject
     ClaimAssign.claimApproveReject(status);
+    // cy.visit("/claim/viewAssignClaim");
+    // cy.visit(`/claim/assignClaim/id/${idClaim}`);
+    // cy.get(".oxd-button--danger").click({ force: true });
+    // cy.visit("/claim/viewAssignClaim");
     ckeckClaimTableAssertion(`${referenceId}`, expectValue);
   });
 });
